@@ -2,7 +2,7 @@
 
 A go generator for what I used to find convenient containers in other languages.
 
-As everybody else, after a tour of go, I just looked for the missing chapter on generics... Then if somenone had worked on a result/either type. There are plenty actually. The only problem I had with all of them was that they shortcircuit the type system with empty interfaces.
+As everybody else, after a tour of go, I just looked for the missing chapter on generics... Then if somenone had worked on a result/either type. There are plenty actually. The only problem I had with all of them was that they shortcircuit the type system with empty interfaces or have a style of If/Get which wasn't of my taste, or both.
 
 So here are my 2 cents after a week with go. It's crazy slow to compile, definetly not idiomatic, but it was fun to write. And if someone wants to play with it, they're more than welcome.
 
