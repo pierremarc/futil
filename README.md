@@ -39,12 +39,13 @@ From a go:genrate comment it looks like
 ### result
 
 The pattern is ```Result<Type> = Err<Type> | Ok<Type>```
+
 Result implements:
-  - Map
-  - FoldF
-  - Map<Type>
-  - Fold<Type>
-  - Fold<Type>F
+  - ```Map((Self::Type) -> ()) -> ()```
+  - ```FoldF((error) -> (), (Self::Type) -> ()) -> ()```
+  - ```Map<Type>((Self::Type) -> Type) -> Result<Type>```
+  - ```Fold<Type>(Type, (Self::Type) -> Type) -> Type```
+  - ```Fold<Type>F((error) -> Type, (Self::Type) -> Type) -> Type```
   
 Error constructor is ```Err<Type>(string | error)```
 
