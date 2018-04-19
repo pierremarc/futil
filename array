@@ -16,6 +16,7 @@ type Array{{ $label }} interface {
 	Slice() []{{$type}}
 	Each(func({{ $type }}))
 	Concat(Array{{$label}}) array{{$label}}
+	Filter(func({{ $type }})bool) array{{$label}}
 {{ range $l, $t := $Types }}
 	Map{{ $l }}(func({{ $type }}) {{ $t }}) array{{ $l }}
 	Reduce{{ $l }}(func({{ $type }}, int, Array{{ $label }}) {{ $t }}, {{ $t }}) {{ $t }}
@@ -62,6 +63,20 @@ func (a array{{ $label }}) Concat(xs Array{{$label}}) array{{ $label }} {
 	return array{{$label}}(append(a.Slice(), xs.Slice()...))
 }
 
+// Filter with array{{$label}} receiver
+// returns a filtered array 
+func (a array{{ $label }}) Filter(f func({{ $type }}) bool) array{{ $label }} {
+	r := make([]{{ $type }}, 0)
+
+	a.Each(func(e {{ $type }}) {
+		if f(e) {
+			r = append(r, e)
+		}
+	})
+
+	return Array{{ $label }}From(r...)
+}
+
 {{ range $l, $t := $Types }}
 // Map with array{{$label}} receiver
 // returns an array{{$l}} resulting from apllying its function argument
@@ -80,6 +95,8 @@ func (a array{{ $label }}) Reduce{{ $l }}(f func({{ $type }}, int, Array{{ $labe
 	}
 	return r
 }
+
+
 
 {{ end }} // end of {{$label}}
 
