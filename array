@@ -17,6 +17,7 @@ type Array{{ $label }} interface {
 	Each(func({{ $type }}))
 	Concat(Array{{$label}}) array{{$label}}
 	Filter(func({{ $type }})bool) array{{$label}}
+	Find(func({{ $type }}) bool) Result{{ $label }} 
 {{ range $l, $t := $Types }}
 	Map{{ $l }}(func({{ $type }}) {{ $t }}) array{{ $l }}
 	Reduce{{ $l }}(func({{ $type }}, int, Array{{ $label }}) {{ $t }}, {{ $t }}) {{ $t }}
@@ -75,6 +76,17 @@ func (a array{{ $label }}) Filter(f func({{ $type }}) bool) array{{ $label }} {
 	})
 
 	return Array{{ $label }}From(r...)
+}
+
+// Find with array{{$label}} receiver
+// returns a Result{{$label}} as soon as item is found 
+func (a array{{ $label }}) Find(f func({{ $type }}) bool) Result{{ $label }} {
+	for _, e := range a.Slice() {
+		if f(e) {
+			return Ok{{$label}}(e)
+		}
+	}
+	return Err{{$label}}("{{$label}} Not Found")
 }
 
 {{ range $l, $t := $Types }}
