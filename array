@@ -12,6 +12,7 @@ import (
 {{ range $label, $type := $Types }}
 // Array{{ $label }}
 type Array{{ $label }} interface {
+	At(int) Result{{$label}}
 	First() Result{{$label}}
 	Slice() []{{$type}}
 	Each(func({{ $type }}))
@@ -39,11 +40,21 @@ func Array{{$label}}From(a ...{{$type}}) array{{$label}} {
 
 // First with array{{$label}} receiver
 // returns first element in a Result{{$label}} container
-func (a array{{$label}}) First() Result{{$label}} {
-	if len(a) > 0 {
-		return Ok{{$label}}(a[0])
+func (a array{{$label}}) At(i int) Result{{$label}} {
+	if len(a) == 0 {
+		return Err{{$label}}("Empty Array")
 	}
-	return Err{{$label}}("Out Of Bound Array Access")
+	if i < 0 || i >= len(a) {
+		return Err{{$label}}("Out Of Bound Array Access")
+	}
+
+	return Ok{{$label}}(a[i])
+}
+
+// First with array{{$label}} receiver
+// returns first element in a Result{{$label}} container
+func (a array{{$label}}) First() Result{{$label}} {
+	return a.At(0)
 }
 
 // Slice with array{{$label}} receiver
